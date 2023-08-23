@@ -2,7 +2,7 @@
 <script>
     import { onMount } from "svelte";
     import { addCandidate, deleteCandidate, editCandidate, fetchCandidates } from "../lib/api";
-    import { Input, Label } from "flowbite-svelte";
+    import { Input, Label, Button} from "flowbite-svelte";
   
     let candidates = [];
     let isLoading = true;
@@ -28,14 +28,18 @@
       isLoading = false;
     });
 
-    async function addNewCandidate() {
-	  const success = await addCandidate(newCandidate);
-	  if (success) {
-		candidates = await fetchCandidates();
-		isAddPopupOpen = false;
-	  }
-	}
+       function openAddPopup() {
+  newCandidate = {
+    firstName: "",
+    surname: "",
+    mobile: "",
+    email: ""
+    // Reset other properties
+  };
+  isAddPopupOpen = true;
+}
      
+
     function openEditPopup(candidate) {
     selectedCandidate = candidate;
     isPopupOpen = true;
@@ -75,7 +79,7 @@
             <td>{candidate.mobile}</td>
             <td>{candidate.id}</td>
             <td>{candidate.address.cityName}, {candidate.address.countryName}</td>
-            <td><button on:click={() => isAddPopupOpen = true}>Add</button></td>
+            <td><button on:click={() => openAddPopup()}>Add</button></td>
             <td><button on:click={() => openEditPopup(candidate)}>Edit</button></td>
             <td><button on:click={() => confirmDelete(candidate)}>Delete</button></td>
           </tr>
@@ -217,6 +221,23 @@ display: flex;
 justify-content: space-between;
 margin-top: 10px; 
 color: brown;
+}
+
+.popup-content.delete-popup-content {
+  width: 500px; /* Adjust the width as needed */
+  height: 150px; /* Adjust the height as needed */
+  background-color: gray; /* Example background color for delete popup */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Center the content horizontally */
+  margin-left:50px;
+  margin-top: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
 }
   </style>
   

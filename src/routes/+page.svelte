@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { fetchCandidates } from "../lib/api";
+	import { fetchCandidates, addCandidate } from "../lib/api";
 	import Table from "../components/Table.svelte";
 	
   
