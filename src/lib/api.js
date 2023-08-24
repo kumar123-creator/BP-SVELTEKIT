@@ -99,6 +99,7 @@ export async function editCandidate(updatedCandidate) {
     if (response.ok) {
       // Candidate updated successfully on the server
       console.log("Candidate updated successfully!");
+      console.log(updatedCandidate);
     } else {
       // Handle error if update on server failed
       console.error('Failed to update candidate on the server');

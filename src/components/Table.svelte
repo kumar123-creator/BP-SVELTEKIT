@@ -50,7 +50,9 @@
   isDeleteConfirmPopupOpen = true;
 }
   </script>
-  
+<h2 class="table-heading">CANDIDATE LIST</h2>
+<button class="add-button" on:click={() => openAddPopup()}>Add Candidate</button>
+
   {#if isLoading}
     <p>Loading candidates...</p>
   {:else}
@@ -64,7 +66,6 @@
           <th>Mobile</th>
           <th>ID</th>
           <th>Location</th>
-          <th>Add</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -79,9 +80,8 @@
             <td>{candidate.mobile}</td>
             <td>{candidate.id}</td>
             <td>{candidate.address.cityName}, {candidate.address.countryName}</td>
-            <td><button on:click={() => openAddPopup()}>Add</button></td>
-            <td><button on:click={() => openEditPopup(candidate)}>Edit</button></td>
-            <td><button on:click={() => confirmDelete(candidate)}>Delete</button></td>
+            <td><button class="edit-button" on:click={() => openEditPopup(candidate)}>Edit</button></td>
+            <td><button class="delete-button" on:click={() => confirmDelete(candidate)}>Delete</button></td>
           </tr>
         {/each}
       </tbody>
@@ -90,7 +90,7 @@
 
   {#if isAddPopupOpen}
 <div class="popup-background" style="display: {isAddPopupOpen ? 'block' : 'none'}">
-  <div class="popup-content">
+  <div class="popup-content ">
 	<form>
 	  <div class="grid gap-6 mb-6 md:grid-cols-1">
 		<div>
@@ -124,7 +124,7 @@
 
   {#if selectedCandidate}
   <div class="popup-background" style="display: {isPopupOpen ? 'block' : 'none'}">
-    <div class="popup-content">
+    <div class="popup-content edit-popup-content">
       <form>
 		<div class="grid gap-6 mb-6 md:grid-cols-1">
 			<div>
@@ -170,6 +170,44 @@
 {/if}
   
   <style>
+  .table-heading {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: x-large; 
+    color: darkblue;
+  }
+
+  .add-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 3px;
+    background-color: purple;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .edit-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
 :global(.styled-table) {
 	  width: 100%;
 	  border-collapse: collapse;
@@ -210,7 +248,7 @@ padding: 20px;
 border-radius: 5px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 width: 400px;
-height: 500px;
+height: 250px;
 text-align: center; /* Center the content horizontally */
 margin-left:550px;
 margin-top: 100px;
@@ -223,10 +261,22 @@ margin-top: 10px;
 color: brown;
 }
 
+.popup-content.edit-popup-content {
+background-color:lavender;
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+width: 400px;
+height: 400px;
+text-align: center; /* Center the content horizontally */
+margin-left:550px;
+margin-top: 100px;
+}
+
 .popup-content.delete-popup-content {
   width: 500px; /* Adjust the width as needed */
   height: 150px; /* Adjust the height as needed */
-  background-color: gray; /* Example background color for delete popup */
+  background-color: lavender; /* Example background color for delete popup */
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -240,4 +290,3 @@ color: brown;
   
 }
   </style>
-  

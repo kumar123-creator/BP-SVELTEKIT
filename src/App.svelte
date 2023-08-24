@@ -2,7 +2,7 @@
 <script>
     // @ts-ignore
     import { Router, Route } from "@sveltejs/kit";
-    import Header from "./components/Header.svelte";
+    import Header from "./components/AddCandidatePopup.svelte";
   </script>
   
   <Header />

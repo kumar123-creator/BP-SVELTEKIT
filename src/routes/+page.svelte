@@ -17,4 +17,3 @@
   <Table candidates={candidates} />
   
   
-  
