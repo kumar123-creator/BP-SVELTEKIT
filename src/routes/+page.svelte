@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { fetchCandidates, addCandidate } from "../lib/api";
+	import { fetchCandidates, addCandidate, isAddPopupOpen } from "../lib/api";
 	import Table from "../components/Table.svelte";
 	
   
@@ -14,6 +14,6 @@
 	});
   </script>
   
-  <Table candidates={candidates} />
+  <Table candidates={candidates} isAddPopupOpen={isAddPopupOpen} />
   
   

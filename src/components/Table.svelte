@@ -7,7 +7,7 @@
     let candidates = [];
     let isLoading = true;
     let isAddPopupOpen = false;
-	let newCandidate = {
+	  let newCandidate = {
 	  firstName: "",
 	  surname: "",
 	  mobile: "",
@@ -115,7 +115,7 @@
 	  </div>
 	</form>
 	 <div class="popup-buttons">
-      <button on:click={() => addCandidate()}>Add</button>
+      <button on:click={() => addCandidate(newCandidate)}>Add</button>
       <button on:click={() => isAddPopupOpen = false} class="alternative">Cancel</button>
     </div>
 </div>

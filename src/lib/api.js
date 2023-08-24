@@ -49,7 +49,7 @@ export function openAddPopup() {
   }
     
 
-export async function addCandidate() {
+  export async function addCandidate(newCandidate) {
     // Make an API call to add the new candidate
     const response = await fetch(`https://api.recruitly.io/api/candidate?apiKey=TEST1236C4CF23E6921C41429A6E1D546AC9535E`, {
       method: 'POST',
@@ -59,55 +59,57 @@ export async function addCandidate() {
       body: JSON.stringify(newCandidate)
       // Add any necessary authentication headers or tokens
     });
-
+  
     if (response.ok) {
       // Candidate added successfully on the server
       console.log("Candidate added successfully!");
       console.log(newCandidate);
-
+      
+      // Add the new candidate to the local candidates array
+      candidates.push(newCandidate);
+      isAddPopupOpen = false; // Close the popup after adding
     } else {
       // Handle error if adding candidate on server failed
       console.error('Failed to add candidate on the server');
     }
-
-    isAddPopupOpen = false; // Close the popup after adding
   }
-
+  
 
 
 export function openEditPopup(candidate) {
     selectedCandidate = candidate;
     isPopupOpen = true;
   }
-export async function editCandidate(updatedCandidate) {
-  // Find the index of the selectedCandidate in the candidates array
-  const index = candidates.findIndex(candidate => candidate.id === updatedCandidate.id);
-
-  if (index !== -1) {
-    candidates[index] = updatedCandidate;
-
-    // Make an API call to update the server
-    const response = await fetch(`https://api.recruitly.io/api/candidate?apiKey=TEST1236C4CF23E6921C41429A6E1D546AC9535E`, {
-      method: 'POST', // Use PUT method to update existing data
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedCandidate) // Send the updated candidate data
-      // Add any necessary authentication headers or tokens
-    });
-
-    if (response.ok) {
-      // Candidate updated successfully on the server
-      console.log("Candidate updated successfully!");
-      console.log(updatedCandidate);
-    } else {
-      // Handle error if update on server failed
-      console.error('Failed to update candidate on the server');
+  export async function editCandidate(updatedCandidate) {
+    const index = candidates.findIndex(candidate => candidate.id === updatedCandidate.id);
+  
+    if (index !== -1) {
+      // Update the local candidates array first
+      candidates[index] = updatedCandidate;
+  
+      // Make the API call
+      const response = await fetch(`https://api.recruitly.io/api/candidate?apiKey=TEST1236C4CF23E6921C41429A6E1D546AC9535E`, {
+        method: 'PUT', // Use PUT method for updates
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedCandidate)
+      });
+  
+      if (response.ok) {
+        // Candidate updated successfully on the server
+        console.log("Candidate updated successfully!");
+        console.log(updatedCandidate);
+      } else {
+        // Handle error if update on server failed
+        console.error('Failed to update candidate on the server');
+      }
+  
+      // Close the popup after the API call and update
+      isPopupOpen = false;
     }
   }
-
-  isPopupOpen = false; // Close the popup after editing
-}
+  
 
 export function confirmDelete(candidate) {
     candidateToDelete = candidate;
