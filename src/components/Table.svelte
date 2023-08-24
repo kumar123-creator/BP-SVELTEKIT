@@ -1,7 +1,7 @@
 <!-- src/components/Table.svelte -->
 <script>
     import { onMount } from "svelte";
-    import { addCandidate, deleteCandidate,  fetchCandidates } from "../lib/api";
+    import { addCandidate, editCandidate, deleteCandidate,  fetchCandidates } from "../lib/api";
     import { Input, Label, Button} from "flowbite-svelte";
   
     let candidates = [];
