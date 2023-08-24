@@ -37,17 +37,7 @@ export async function fetchCandidates() {
   }
 }
 
-export function openAddPopup() {
-    newCandidate = {
-      firstName: "",
-      surname: "",
-      mobile: "",
-      email: ""
-      // Reset other properties
-    };
-    isAddPopupOpen = true;
-  }
-    
+
 
   export async function addCandidate(newCandidate) {
     // Make an API call to add the new candidate
@@ -75,27 +65,23 @@ export function openAddPopup() {
   }
   
 
-
-export function openEditPopup(candidate) {
-    selectedCandidate = candidate;
-    isPopupOpen = true;
-  }
   export async function editCandidate(updatedCandidate) {
+    // Find the index of the selectedCandidate in the candidates array
     const index = candidates.findIndex(candidate => candidate.id === updatedCandidate.id);
-  
+
     if (index !== -1) {
-      // Update the local candidates array first
       candidates[index] = updatedCandidate;
-  
-      // Make the API call
+
+      // Make an API call to update the server
       const response = await fetch(`https://api.recruitly.io/api/candidate?apiKey=TEST1236C4CF23E6921C41429A6E1D546AC9535E`, {
-        method: 'PUT', // Use PUT method for updates
+        method: 'POST', // Use PUT method to update existing data
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(updatedCandidate)
+        body: JSON.stringify(updatedCandidate) // Send the updated candidate data
+        // Add any necessary authentication headers or tokens
       });
-  
+
       if (response.ok) {
         // Candidate updated successfully on the server
         console.log("Candidate updated successfully!");
@@ -104,17 +90,11 @@ export function openEditPopup(candidate) {
         // Handle error if update on server failed
         console.error('Failed to update candidate on the server');
       }
-  
-      // Close the popup after the API call and update
-      isPopupOpen = false;
     }
-  }
-  
 
-export function confirmDelete(candidate) {
-    candidateToDelete = candidate;
-    isDeleteConfirmPopupOpen = true;
+    isPopupOpen = false; // Close the popup after editing
   }
+
     
 
 export async function deleteCandidate(candidate) {

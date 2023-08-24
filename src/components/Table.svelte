@@ -1,7 +1,7 @@
 <!-- src/components/Table.svelte -->
 <script>
     import { onMount } from "svelte";
-    import { addCandidate, deleteCandidate, editCandidate, fetchCandidates } from "../lib/api";
+    import { addCandidate, deleteCandidate,  fetchCandidates } from "../lib/api";
     import { Input, Label, Button} from "flowbite-svelte";
   
     let candidates = [];
@@ -41,9 +41,41 @@
      
 
     function openEditPopup(candidate) {
-    selectedCandidate = candidate;
+    selectedCandidate = { ...candidate }; 
     isPopupOpen = true;
   }
+
+  async function editCandidate(updatedCandidate) {
+    // Find the index of the selectedCandidate in the candidates array
+    const index = candidates.findIndex(candidate => candidate.id === updatedCandidate.id);
+
+    if (index !== -1) {
+      candidates[index] = updatedCandidate;
+
+      // Make an API call to update the server
+      const response = await fetch(`https://api.recruitly.io/api/candidate?apiKey=TEST1236C4CF23E6921C41429A6E1D546AC9535E`, {
+        method: 'POST', // Use PUT method to update existing data
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedCandidate) // Send the updated candidate data
+        // Add any necessary authentication headers or tokens
+      });
+
+      if (response.ok) {
+        // Candidate updated successfully on the server
+        console.log("Candidate updated successfully!");
+        console.log(updatedCandidate);
+      } else {
+        // Handle error if update on server failed
+        console.error('Failed to update candidate on the server');
+      }
+    }
+
+    isPopupOpen = false; // Close the popup after editing
+  }
+
+  
 
   function confirmDelete(candidate) {
   candidateToDelete = candidate;
