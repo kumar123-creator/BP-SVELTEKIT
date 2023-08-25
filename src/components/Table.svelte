@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { addCandidate, deleteCandidate,  fetchCandidates } from "../lib/api";
     import { Input, Label, Button} from "flowbite-svelte";
+    import {Table} from "flowbite-svelte";
   
     let candidates = [];
     let isLoading = true;
@@ -88,7 +89,7 @@
   {#if isLoading}
     <p>Loading candidates...</p>
   {:else}
-    <table class="styled-table">
+    <Table class="styled-table">
       <thead>
         <tr>
           <th>First Name</th>
@@ -117,83 +118,78 @@
           </tr>
         {/each}
       </tbody>
-    </table>
+    </Table>
   {/if}
 
   {#if isAddPopupOpen}
-<div class="popup-background" style="display: {isAddPopupOpen ? 'block' : 'none'}">
-  <div class="popup-content ">
-	<form>
-	  <div class="grid gap-6 mb-6 md:grid-cols-1">
-		<div>
-		  <label for="first_name" class="mb-2">First name</label>
-		  <input type="text" id="first_name" bind:value={newCandidate.firstName} />
-		</div>
-		
-		<div>
-		  <label for="last_name" class="mb-2">Surname</label>
-		  <input type="text" id="last_name" bind:value={newCandidate.surname} />
-		</div>
-  
-		<div>
-		  <label for="phone" class="mb-2">Mobile</label>
-		  <input type="tel" id="phone" bind:value={newCandidate.mobile} />
-		</div>
-  
-		<div>
-		  <label for="email" class="mb-2">Email</label>
-		  <input type="email" id="email" bind:value={newCandidate.email} />
-		</div>
-	  </div>
-	</form>
-	 <div class="popup-buttons">
-      <button on:click={() => addCandidate(newCandidate)}>Add</button>
-      <button on:click={() => isAddPopupOpen = false} class="alternative">Cancel</button>
-    </div>
-</div>
-</div>
-  {/if}
-
-  {#if selectedCandidate}
-  <div class="popup-background" style="display: {isPopupOpen ? 'block' : 'none'}">
-    <div class="popup-content edit-popup-content">
-      <form>
-		<div class="grid gap-6 mb-6 md:grid-cols-1">
-			<div>
-			  <Label for="first_name" class="mb-2">First name</Label>
-			  <Input type="text" id="first_name" bind:value={selectedCandidate.firstName}/>
-			</div>	  
-			
-			<div>	  
-			  <Label for="last_name" class="mb-2">Surname</Label>	  
-			  <Input type="text" id="last_name"  bind:value={selectedCandidate.surname}/>	  
-			</div>
-	  
-			<div>
-	  		  <Label for="phone" class="mb-2">Mobile</Label>  
-			  <Input type="tel" id="phone" bind:value={selectedCandidate.mobile} />	  
-			</div>
-	  
-			<div>	  
-			  <Label for="email" class="mb-2">Email</Label>
-			  <Input type="email" id="email" bind:value={selectedCandidate.email}/>
-			</div>
+  <div class="popup-background">
+    <div class="popup-content">
+      <form class="form">
+        <h3>Add Candidate</h3>
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="first_name" bind:value={newCandidate.firstName} />
+        </div>
+        <div class="form-group">
+          <label for="last_name">Surname</label>
+          <input type="text" id="last_name" bind:value={newCandidate.surname} />
+        </div>
+        <div class="form-group">
+          <label for="phone">Mobile</label>
+          <input type="tel" id="phone" bind:value={newCandidate.mobile} />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" bind:value={newCandidate.email} />
+        </div>
+        <div class="form-buttons">
+          <button on:click={() => addCandidate(newCandidate)}>Add</button>
+          <button on:click={() => isAddPopupOpen = false} class="alternative">Cancel</button>
+        </div>
       </form>
-      <div class="popup-buttons">
+    </div>
+  </div>
+  {/if}
+  
+
+  
+{#if selectedCandidate}
+<div class="popup-background" style="display: {isPopupOpen ? 'block' : 'none'}">
+  <div class="popup-content edit-popup-content">
+    <form class="form">
+      <h3>Edit Candidate</h3>
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" bind:value={selectedCandidate.firstName} />
+      </div>
+      <div class="form-group">
+        <label for="last_name">Surname</label>
+        <input type="text" id="last_name" bind:value={selectedCandidate.surname} />
+      </div>
+      <div class="form-group">
+        <label for="phone">Mobile</label>
+        <input type="tel" id="phone" bind:value={selectedCandidate.mobile} />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" bind:value={selectedCandidate.email} />
+      </div>
+      <div class="form-buttons">
         <button on:click={() => editCandidate(selectedCandidate)}>Save</button>
         <button on:click={() => isPopupOpen = false} class="alternative">Cancel</button>
       </div>
-    </div>
+    </form>
   </div>
+</div>
 {/if}
 
 {#if isDeleteConfirmPopupOpen}
 <div class="popup-background">
-	<div class="popup-content delete-popup-content">
+  <div class="popup-content delete-popup-content">
     <p>Are you sure you want to delete the following candidate?</p>
     <p>Name: {candidateToDelete.firstName} {candidateToDelete.surname}</p>
     <p>Email: {candidateToDelete.email}</p>
-    <div class="popup-buttons">
+    <div class="form-buttons">
       <button on:click={() => deleteCandidate(candidateToDelete)}>Yes</button>
       <button on:click={() => isDeleteConfirmPopupOpen = false} class="alternative">Cancel</button>
     </div>
@@ -262,44 +258,13 @@
 	  background-color: #f5f5f5;
 	}
 
-    .popup-background {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.3);
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-.popup-content {
-background-color:lavender;
-padding: 20px;
-border-radius: 5px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-width: 400px;
-height: 250px;
-text-align: center; /* Center the content horizontally */
-margin-left:550px;
-margin-top: 100px;
-}
-
-.popup-buttons {
-display: flex;
-justify-content: space-between;
-margin-top: 10px; 
-color: brown;
-}
-
 .popup-content.edit-popup-content {
 background-color:lavender;
 padding: 20px;
 border-radius: 5px;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 width: 400px;
-height: 400px;
+height: 510px;
 text-align: center; /* Center the content horizontally */
 margin-left:550px;
 margin-top: 100px;
@@ -307,7 +272,7 @@ margin-top: 100px;
 
 .popup-content.delete-popup-content {
   width: 500px; /* Adjust the width as needed */
-  height: 150px; /* Adjust the height as needed */
+  height: 170px; /* Adjust the height as needed */
   background-color: lavender; /* Example background color for delete popup */
   padding: 20px;
   border-radius: 5px;
@@ -315,10 +280,80 @@ margin-top: 100px;
   text-align: center; /* Center the content horizontally */
   margin-left:50px;
   margin-top: 20px;
+  font-size: medium;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  
+  transform: translate(-50%, -50%); 
+}
+
+.popup-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px;
+}
+.popup-content h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: darkblue /* Adjust the color as needed */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: purple;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #f2f2f2;
+  background-color: blue;
+}
+
+.form-buttons .alternative {
+  background-color: red;
+  color: white;
 }
   </style>
